@@ -244,7 +244,7 @@ public class VersesDialog extends BaseDialog {
 		return res;
 	}
 
-	VersesView.SelectedVersesListener versesView_selectedVerses = new VersesView.SelectedVersesListener() {
+	VersesView.SelectedVersesListener versesView_selectedVerses = new VersesView.DefaultSelectedVersesListener() {
 		@Override public void onVerseSingleClick(VersesView v, int verse_1 /* this is actually position+1, not necessaryly verse_1 */) {
 			if (listener != null) {
 				if (!compareMode) {
@@ -258,10 +258,6 @@ public class VersesDialog extends BaseDialog {
 				}
 			}
 		}
-		
-		@Override public void onSomeVersesSelected(VersesView v) {}
-		
-		@Override public void onNoVersesSelected(VersesView v) {}
 	};
 
 	public void setListener(final VersesDialogListener listener) {

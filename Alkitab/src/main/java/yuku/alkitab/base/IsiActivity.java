@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -1836,7 +1838,7 @@ public class IsiActivity extends BaseLeftDrawerActivity implements XrefDialog.Xr
 		}
 	}
 
-	VersesView.SelectedVersesListener lsText_selectedVerses = new VersesView.SelectedVersesListener() {
+	VersesView.SelectedVersesListener lsText_selectedVerses = new VersesView.DefaultSelectedVersesListener() {
 		@Override public void onSomeVersesSelected(VersesView v) {
 			if (activeSplitVersion != null) {
 				// synchronize the selection with the split view
@@ -1864,11 +1866,48 @@ public class IsiActivity extends BaseLeftDrawerActivity implements XrefDialog.Xr
 				actionMode = null;
 			}
 		}
-		
-		@Override public void onVerseSingleClick(VersesView v, int verse_1) {}
+
+		@Override
+		public void onVerseLongClick(final VersesView v, final int verse_1) {
+			final String verseText = U.removeSpecialCodes(v.getVerse(verse_1));
+			final TextToSpeech[] tts_box = new TextToSpeech[1];
+			tts_box[0] = new TextToSpeech(IsiActivity.this, status -> {
+				if (status != TextToSpeech.SUCCESS) {
+					Log.w(TAG, "Error TTS");
+					return;
+				}
+
+				final TextToSpeech tts = tts_box[0];
+				if (tts == null) return;
+
+				tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+					@Override
+					public void onStart(final String utteranceId) {
+
+					}
+
+					@Override
+					public void onDone(final String utteranceId) {
+
+					}
+
+					@Override
+					public void onError(final String utteranceId) {
+
+					}
+				});
+
+				final String locale = S.activeVersion.getLocale();
+				if (locale != null) {
+					tts.setLanguage(new Locale(locale));
+				}
+
+				tts.speak(verseText, TextToSpeech.QUEUE_FLUSH, null, "verse");
+			});
+		}
 	};
 	
-	VersesView.SelectedVersesListener lsSplit1_selectedVerses = new VersesView.SelectedVersesListener() {
+	VersesView.SelectedVersesListener lsSplit1_selectedVerses = new VersesView.DefaultSelectedVersesListener() {
 		@Override public void onSomeVersesSelected(VersesView v) {
 			// synchronize the selection with the main view
 			IntArrayList selectedVerses = v.getSelectedVerses_1();
@@ -1878,8 +1917,6 @@ public class IsiActivity extends BaseLeftDrawerActivity implements XrefDialog.Xr
 		@Override public void onNoVersesSelected(VersesView v) {
 			lsSplit0.uncheckAllVerses(true);
 		}
-
-		@Override public void onVerseSingleClick(VersesView v, int verse_1) {}
 	};
 
 	VersesView.OnVerseScrollListener lsText_verseScroll = new VersesView.OnVerseScrollListener() {

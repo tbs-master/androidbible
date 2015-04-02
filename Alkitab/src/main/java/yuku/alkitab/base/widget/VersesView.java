@@ -65,6 +65,21 @@ public class VersesView extends ListView implements AbsListView.OnScrollListener
 		void onSomeVersesSelected(VersesView v);
 		void onNoVersesSelected(VersesView v);
 		void onVerseSingleClick(VersesView v, int verse_1);
+		void onVerseLongClick(VersesView v, int verse_1);
+	}
+
+	public static abstract class DefaultSelectedVersesListener implements SelectedVersesListener {
+		@Override
+		public void onSomeVersesSelected(final VersesView v) {}
+
+		@Override
+		public void onNoVersesSelected(final VersesView v) {}
+
+		@Override
+		public void onVerseSingleClick(final VersesView v, final int verse_1) {}
+
+		@Override
+		public void onVerseLongClick(final VersesView v, final int verse_1) {}
 	}
 
 	public interface AttributeListener {
@@ -156,6 +171,7 @@ public class VersesView extends ListView implements AbsListView.OnScrollListener
 		
 		setAdapter(adapter = new VerseAdapter.Factory().create(getContext()));
 		setOnItemClickListener(itemClick);
+		setOnItemLongClickListener(itemLongClick);
 		setVerseSelectionMode(VerseSelectionMode.multiple);
 		
 		super.setOnScrollListener(this);
@@ -173,7 +189,7 @@ public class VersesView extends ListView implements AbsListView.OnScrollListener
 		adapter.setParallelListener(parallelListener);
 	}
 
-	public void setAttributeListener(VersesView.AttributeListener attributeListener) {
+	public void setAttributeListener(AttributeListener attributeListener) {
 		adapter.setAttributeListener(attributeListener);
 	}
 
@@ -247,7 +263,7 @@ public class VersesView extends ListView implements AbsListView.OnScrollListener
 		stopFling();
 	}
 
-	private OnItemClickListener itemClick = new OnItemClickListener() {
+	final OnItemClickListener itemClick = new OnItemClickListener() {
 		@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if (verseSelectionMode == VerseSelectionMode.singleClick) {
 				if (listener != null) listener.onVerseSingleClick(VersesView.this, adapter.getVerseFromPosition(position));
@@ -255,6 +271,14 @@ public class VersesView extends ListView implements AbsListView.OnScrollListener
 				adapter.notifyDataSetChanged();
 				hideOrShowContextMenuButton();
 			}
+		}
+	};
+
+	final OnItemLongClickListener itemLongClick = new OnItemLongClickListener() {
+		@Override
+		public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+			if (listener != null) listener.onVerseLongClick(VersesView.this, adapter.getVerseFromPosition(position));
+			return true;
 		}
 	};
 

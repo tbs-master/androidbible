@@ -14,6 +14,8 @@ public interface Version {
 
 	public abstract String getLongName();
 
+	public abstract String getLocale();
+
 	/**
 	 * @return The highest bookId on this version plus one.
 	 */
