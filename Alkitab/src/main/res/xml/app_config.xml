@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <menu
-        devotion="true"
-        songs="true"
+        devotion="false"
+        songs="false"
 		dictionary="true"
 		guide="true"
 		commentary="true"
