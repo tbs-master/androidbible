@@ -1,0 +1,9 @@
+{
+	"presets": [
+	],
+
+	"locale_display": {
+	},
+
+	"download_url_format": "https://removed.appspot.com/versions/get_yes?preset_name=$PRESET_NAME"
+}

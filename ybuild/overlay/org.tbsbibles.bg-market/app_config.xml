@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<menu
+		devotion="false"
+		songs="false"
+		dictionary="false"
+		guide="false"
+		commentary="false"
+	/>
+
+	<devotions>
+		<devotion name="sh" />
+		<devotion name="rh" />
+		<devotion name="meid-a" />
+		<devotion name="refheart" />
+		<devotion name="roc" />
+		<devotion name="me-en" />
+	</devotions>
+
+	<internal locale="bg" shortName="BG"      longName="Bulgarian" prefix="bg"  preset_name='bg-bg'  />
+</config>
