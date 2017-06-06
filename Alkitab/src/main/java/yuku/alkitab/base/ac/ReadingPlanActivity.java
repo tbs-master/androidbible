@@ -271,36 +271,15 @@ public class ReadingPlanActivity extends BaseLeftDrawerActivity implements LeftD
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_reading_plan, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
-		final boolean anyReadingPlan = downloadedReadingPlanInfos.size() != 0;
-		menu.findItem(R.id.menuDelete).setVisible(anyReadingPlan);
-
-		if (!anyReadingPlan) {
-			leftDrawer.getHandle().setDescription(null);
-		}
-
-		return true;
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		final int itemId = item.getItemId();
 		if (itemId == android.R.id.home) {
 			leftDrawer.toggleDrawer();
 
-		} else if (itemId == R.id.menuDownload) {
-			downloadReadingPlanList();
-			return true;
-		} else if (itemId == R.id.menuDelete) {
-			deleteReadingPlan();
-			return true;
 		}
+
+		// removed for tbs
+
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -467,21 +446,7 @@ public class ReadingPlanActivity extends BaseLeftDrawerActivity implements LeftD
 	}
 
 	private void deleteReadingPlan() {
-		new AlertDialogWrapper.Builder(this)
-			.setMessage(getString(R.string.rp_deletePlan, readingPlan.info.title))
-			.setPositiveButton(R.string.delete, (dialog, which) -> {
-				S.getDb().deleteReadingPlanById(readingPlan.info.id);
-				readingPlan = null;
-				Preferences.remove(Prefkey.active_reading_plan_id);
-				loadReadingPlan(0);
-				loadReadingPlanProgress();
-				loadDayNumber();
-				prepareDropDownNavigation();
-				prepareDisplay();
-				supportInvalidateOptionsMenu();
-			})
-			.setNegativeButton(R.string.cancel, null)
-			.show();
+		// removed for tbs
 	}
 
 	private void changeDay(int day) {
@@ -531,7 +496,7 @@ public class ReadingPlanActivity extends BaseLeftDrawerActivity implements LeftD
 	}
 
 	private void downloadReadingPlanList() {
-		startActivityForResult(HelpActivity.createIntent("https://alkitab-host.appspot.com/rp/downloads?app_versionCode=" + App.getVersionCode() + "&app_versionName=" + Uri.encode(App.getVersionName())), REQCODE_openList);
+		// removed for tbs
 	}
 
 	@Override

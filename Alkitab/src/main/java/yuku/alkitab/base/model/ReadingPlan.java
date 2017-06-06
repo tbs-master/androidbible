@@ -15,7 +15,6 @@ public class ReadingPlan {
 		public int duration;
 		/** starting time of this reading plan in millis */
 		public long startTime;
-		public String url;
 	}
 
 	public static String gidFromName(String name) {
